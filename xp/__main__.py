@@ -16,17 +16,22 @@ def wrap_in_results(elements: [Union[etree.Element, etree._ElementUnicodeResult]
     return results
 
 
-# See <http://lxml.de/FAQ.html#why-doesn-t-the-pretty-print-option-reformat-my-xml-output>
-parser = etree.XMLParser(remove_blank_text=True)
-input = etree.parse(sys.stdin, parser)
+def main():
+    # See <http://lxml.de/FAQ.html#why-doesn-t-the-pretty-print-option-reformat-my-xml-output>
+    parser = etree.XMLParser(remove_blank_text=True)
+    input = etree.parse(sys.stdin, parser)
 
-if len(sys.argv) > 1:
-    query = sys.argv[1]
-    matches = input.xpath(query)
-    results = wrap_in_results(matches)
-    output = etree.tostring(results, pretty_print=True)
-else:
-    output = etree.tostring(input, pretty_print=True)
+    if len(sys.argv) > 1:
+        query = sys.argv[1]
+        matches = input.xpath(query)
+        results = wrap_in_results(matches)
+        output = etree.tostring(results, pretty_print=True)
+    else:
+        output = etree.tostring(input, pretty_print=True)
 
-formatter = TerminalFormatter() if sys.stdout.isatty() else NullFormatter()
-highlight(output, XmlLexer(), formatter, sys.stdout)
+    formatter = TerminalFormatter() if sys.stdout.isatty() else NullFormatter()
+    highlight(output, XmlLexer(), formatter, sys.stdout)
+
+
+if __name__ == '__main__':
+    main()
