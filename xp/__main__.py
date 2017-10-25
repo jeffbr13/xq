@@ -19,7 +19,7 @@ def wrap_in_results(elements: [Union[etree.Element, etree._ElementUnicodeResult]
     return results
 
 
-def main(infile, xpath_query=None):
+def main(infile, xpath_query=None, colorize=False):
     xml_input = etree.parse(infile, etree.XMLParser(remove_blank_text=True))
 
     if xpath_query:
@@ -29,8 +29,8 @@ def main(infile, xpath_query=None):
     else:
         output = etree.tostring(xml_input, pretty_print=True)
 
-    formatter = TerminalFormatter() if sys.stdout.isatty() else NullFormatter()
-    highlight(output, XmlLexer(), formatter, sys.stdout)
+    formatter = TerminalFormatter() if colorize else NullFormatter()
+    return highlight(output, XmlLexer(), formatter)
 
 
 if __name__ == '__main__':
@@ -48,4 +48,4 @@ if __name__ == '__main__':
         help='XML file to process. Defaults to STDIN.',
     )
     args = parser.parse_args()
-    main(args.file, args.xpath_query)
+    sys.stdout.write(main(args.file, args.xpath_query, sys.stdout.isatty()))
