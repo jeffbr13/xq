@@ -1,7 +1,7 @@
-xq
+xp
 ==
 
-Apply XPath expressions to XML.
+Apply XPath expressions to XML, like ``jq`` does for JSON.
 
 
 Usage
