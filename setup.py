@@ -1,17 +1,17 @@
 from setuptools import setup, find_packages
 from codecs import open
-from os import path
 
+from xp import VERSION, NAME, DESCRIPTION
 
 with open('README.rst', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='xp',
-    description='Like jq but for XML and XPath.',
+    name=NAME,
+    description=DESCRIPTION,
     long_description=long_description,
     keywords='xml xpath text',
-    version='0.0.1',
+    version=VERSION,
     license='MPL 2.0',
 
     author='Ben Jeffrey',

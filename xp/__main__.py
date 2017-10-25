@@ -1,3 +1,4 @@
+import argparse
 import sys
 from typing import Union
 
@@ -8,6 +9,8 @@ from pygments.formatters.other import NullFormatter
 from pygments.formatters.terminal import TerminalFormatter
 from pygments.lexers.html import XmlLexer
 
+from . import NAME, DESCRIPTION, VERSION
+
 
 def wrap_in_results(elements: [Union[etree.Element, etree._ElementUnicodeResult]]) -> str:
     results = E.results()
@@ -16,22 +19,33 @@ def wrap_in_results(elements: [Union[etree.Element, etree._ElementUnicodeResult]
     return results
 
 
-def main():
-    # See <http://lxml.de/FAQ.html#why-doesn-t-the-pretty-print-option-reformat-my-xml-output>
-    parser = etree.XMLParser(remove_blank_text=True)
-    input = etree.parse(sys.stdin, parser)
+def main(infile, xpath_query=None):
+    xml_input = etree.parse(infile, etree.XMLParser(remove_blank_text=True))
 
-    if len(sys.argv) > 1:
-        query = sys.argv[1]
-        matches = input.xpath(query)
+    if xpath_query:
+        matches = xml_input.xpath(xpath_query)
         results = wrap_in_results(matches)
         output = etree.tostring(results, pretty_print=True)
     else:
-        output = etree.tostring(input, pretty_print=True)
+        output = etree.tostring(xml_input, pretty_print=True)
 
     formatter = TerminalFormatter() if sys.stdout.isatty() else NullFormatter()
     highlight(output, XmlLexer(), formatter, sys.stdout)
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(
+        prog=NAME,
+        description=DESCRIPTION,
+    )
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + VERSION)
+    parser.add_argument(
+        'xpath_query', nargs='?', type=str,
+        help='XPath query to apply to XML document.'
+    )
+    parser.add_argument(
+        'file', nargs='?', type=argparse.FileType('r'), default=sys.stdin,
+        help='XML file to process. Defaults to STDIN.',
+    )
+    args = parser.parse_args()
+    main(args.file, args.xpath_query)
