@@ -25,7 +25,7 @@ setup(
         'Environment :: Console',
         'Topic :: Terminals',
         'Topic :: Text Processing :: Markup :: XML',
-        'Topic :: Utilities'
+        'Topic :: Utilities',
         'License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)',
     ],
 
