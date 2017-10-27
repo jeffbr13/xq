@@ -20,14 +20,17 @@ def wrap_in_results(elements: [Union[etree._Element, etree._ElementUnicodeResult
 
 
 def main(infile, xpath_query=None, colorize=False):
-    xml_input = etree.parse(infile, etree.XMLParser(remove_blank_text=True))
+    try:
+        parsed = etree.parse(infile, etree.XMLParser(remove_blank_text=True))
+    except etree.XMLSyntaxError:
+        parsed = etree.parse(infile, etree.HTMLParser(remove_blank_text=True))
 
     if xpath_query:
-        matches = xml_input.xpath(xpath_query)
+        matches = parsed.xpath(xpath_query)
         results = wrap_in_results(matches)
         output = etree.tostring(results, pretty_print=True)
     else:
-        output = etree.tostring(xml_input, pretty_print=True)
+        output = etree.tostring(parsed, pretty_print=True)
 
     formatter = TerminalFormatter() if colorize else NullFormatter()
     return highlight(output, XmlLexer(), formatter)

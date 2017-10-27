@@ -40,27 +40,19 @@ class TestHtmlXpathExpressions(unittest.TestCase):
         self.test_input.close()
 
     def test_extract_elements(self):
-        expected_output = etree.tounicode(
-            E.results(
-                E.result(
-                    E.p('Paragraph 1 with a ', E.a('link', href='/url/1'), '.')
-                ),
-                E.result(
-                    E.p('Paragraph 2.')
-                ),
-            ),
-            pretty_print=True
+        expected_output = ("<results>\n"
+                           "  <result><p>Paragraph 1 with a <a href=\"/url/1\">link</a>.</p>\n"
+                           "        </result>\n"
+                           "  <result><p>Paragraph 2.</p>\n"
+                           "    </result>\n"
+                           "  <result><p><a href=\"/url/2\">&#128736;</a></p>\n"
+                           "    </result>\n"
+                           "</results>\n")
+
+        self.assertEqual(
+            main(self.test_input, '//p', colorize=False),
+            expected_output
         )
-        # expected_output = etree.tounicode(wrap_in_results([
-        #         E.p('Paragraph 1 with a ', E.a('link', href='/url/1'), '.'),
-        #         E.p('Paragraph 2.')
-        #     ]),
-        #     pretty_print=True
-        # )
-        output = main(self.test_input, '//p', colorize=False)
-        print(expected_output)
-        print(output)
-        self.assertEqual(expected_output, output)
 
     def test_extract_attributes(self):
         expected_output = etree.tounicode(
@@ -70,7 +62,10 @@ class TestHtmlXpathExpressions(unittest.TestCase):
             ),
             pretty_print=True
         )
-        self.assertEqual(expected_output, main(self.test_input, '//a/@href', colorize=False))
+        self.assertEqual(
+            main(self.test_input, '//a/@href', colorize=False),
+            expected_output
+        )
 
     def test_extract_text(self):
         expected_output = etree.tounicode(
@@ -80,4 +75,7 @@ class TestHtmlXpathExpressions(unittest.TestCase):
             ),
             pretty_print=True
         )
-        self.assertEqual(expected_output, main(self.test_input, '//h1/text()', colorize=False))
+        self.assertEqual(
+            main(self.test_input, '//h1/text()', colorize=False),
+            expected_output
+        )
