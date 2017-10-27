@@ -12,7 +12,7 @@ from pygments.lexers.html import XmlLexer
 from . import NAME, DESCRIPTION, VERSION
 
 
-def wrap_in_results(elements: [Union[etree._Element, etree._ElementUnicodeResult]]) -> str:
+def wrap_in_results(elements: [Union[etree._Element, etree._ElementUnicodeResult]]) -> etree._Element:
     results = E.results()
     for el in elements:
         results.append(E.result(el))
