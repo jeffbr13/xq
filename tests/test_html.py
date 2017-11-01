@@ -3,7 +3,7 @@ from io import StringIO
 from lxml import etree
 from lxml.builder import E
 
-from xp.__main__ import main, wrap_in_results
+from xq.__main__ import main
 
 SAMPLE_HTML = """
 <!DOCTYPE html>

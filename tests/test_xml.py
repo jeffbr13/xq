@@ -4,7 +4,7 @@ from lxml import etree
 
 from lxml.builder import E
 
-from xp.__main__ import main
+from xq.__main__ import main
 
 
 SAMPLE_XML = """
