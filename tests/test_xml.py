@@ -4,7 +4,7 @@ from lxml import etree
 
 from lxml.builder import E
 
-from xq.__main__ import main
+from xq.__main__ import apply_xpath
 
 
 SAMPLE_XML = """
@@ -78,7 +78,7 @@ class TestXmlXpathExpressions(unittest.TestCase):
             ),
             pretty_print=True
         )
-        self.assertEqual(expected_output, main(self.test_input, './channel/item/title', colorize=False))
+        self.assertEqual(expected_output, apply_xpath(self.test_input, './channel/item/title', colorize=False))
 
     def test_extract_single_attribute(self):
         expected_output = etree.tounicode(
@@ -87,7 +87,7 @@ class TestXmlXpathExpressions(unittest.TestCase):
             ),
             pretty_print=True
         )
-        self.assertEqual(expected_output, main(self.test_input, './channel/item[2]/enclosure/@url', colorize=False))
+        self.assertEqual(expected_output, apply_xpath(self.test_input, './channel/item[2]/enclosure/@url', colorize=False))
 
     def test_extract_text(self):
         expected_output = etree.tounicode(
@@ -98,4 +98,4 @@ class TestXmlXpathExpressions(unittest.TestCase):
             ),
             pretty_print=True
         )
-        self.assertEqual(expected_output, main(self.test_input, './channel/item/title/text()', colorize=False))
+        self.assertEqual(expected_output, apply_xpath(self.test_input, './channel/item/title/text()', colorize=False))

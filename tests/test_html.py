@@ -3,7 +3,7 @@ from io import StringIO
 from lxml import etree
 from lxml.builder import E
 
-from xq.__main__ import main
+from xq.__main__ import apply_xpath
 
 SAMPLE_HTML = """
 <!DOCTYPE html>
@@ -50,7 +50,7 @@ class TestHtmlXpathExpressions(unittest.TestCase):
                            "</results>\n")
 
         self.assertEqual(
-            main(self.test_input, '//p', colorize=False),
+            apply_xpath(self.test_input, '//p', colorize=False),
             expected_output
         )
 
@@ -63,7 +63,7 @@ class TestHtmlXpathExpressions(unittest.TestCase):
             pretty_print=True
         )
         self.assertEqual(
-            main(self.test_input, '//a/@href', colorize=False),
+            apply_xpath(self.test_input, '//a/@href', colorize=False),
             expected_output
         )
 
@@ -76,6 +76,6 @@ class TestHtmlXpathExpressions(unittest.TestCase):
             pretty_print=True
         )
         self.assertEqual(
-            main(self.test_input, '//h1/text()', colorize=False),
+            apply_xpath(self.test_input, '//h1/text()', colorize=False),
             expected_output
         )

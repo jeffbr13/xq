@@ -19,7 +19,7 @@ def wrap_in_results(elements: [Union[etree._Element, etree._ElementUnicodeResult
     return results
 
 
-def main(infile, xpath_query=None, colorize=False):
+def apply_xpath(infile, xpath_query=None, colorize=False):
     try:
         parsed = etree.parse(infile, etree.XMLParser(remove_blank_text=True))
     except etree.XMLSyntaxError:
@@ -36,7 +36,7 @@ def main(infile, xpath_query=None, colorize=False):
     return highlight(output, XmlLexer(), formatter)
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(
         prog=NAME,
         description=DESCRIPTION,
@@ -51,4 +51,8 @@ if __name__ == '__main__':
         help='XML file to process. Defaults to STDIN.',
     )
     args = parser.parse_args()
-    sys.stdout.write(main(args.file, args.xpath_query, sys.stdout.isatty()))
+    sys.stdout.write(apply_xpath(args.file, args.xpath_query, sys.stdout.isatty()))
+
+
+if __name__ == '__main__':
+    main()
