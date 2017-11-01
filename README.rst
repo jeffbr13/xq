@@ -4,6 +4,18 @@ xq
 Apply XPath expressions to XML, like ``jq`` does for JSONPath and JSON.
 
 
+Installation
+------------
+
+Install with ``pip``::
+
+    pip install xq
+
+Or download the repo and install via ``setuptools``::
+
+    python setup.py install
+
+
 Usage
 -----
 
@@ -15,6 +27,14 @@ Extract download URLs from an RSS feed::
 Extract all links from an HTML page footer::
 
     http get 'http://br-rss.jeffbr13.net/ | xq '//footer//a/@href'
+
+
+Test
+----
+
+Run ``unittest`` in the root directory to autodetect and run tests::
+
+    python -m unittest
 
 
 Build
@@ -33,5 +53,5 @@ and `upload to PyPI <https://packaging.python.org/tutorials/distributing-package
 See Also
 --------
 
-- `jq <https://github.com/stedolan/jq>`
-- `hq <https://github.com/rbwinslow/hq>`
+- `jq <https://github.com/stedolan/jq>`_
+- `hq <https://github.com/rbwinslow/hq>`_
